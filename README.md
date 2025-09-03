@@ -5,10 +5,10 @@ Aplicativo desenvolvido em Flutter para a disciplina Programação para Disposit
 ## Como rodar o projeto
 
 ## Melhorias previstas para o futuro
-1. Criar repository/controller para Clientes.
-    Adicionar login para clientes
-    Exibir em Meus Horarios só os agendamentos do cliente ou do profissional logado.
-2. Implementar lógica e validação para login
-3. Implementar lógica para logout
-4. Criar página para configuração de dados do cliente/profissional (view/configuracao_page.dart)
-5. Ajustar layout
+1. Implementar lógica e validação para login
+2. Criar repository/controller para Clientes. 
+3. Exibir em Meus Horarios só os agendamentos do cliente ou do profissional logado.
+4. Ajustar layout
+5. Implementar lógica para logout
+6. Criar página para configuração de dados do cliente/profissional (view/configuracao_page.dart)
+7. Criar integração com banco de dados
