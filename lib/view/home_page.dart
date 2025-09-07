@@ -79,7 +79,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 child: const Text(
-                  'Meus horários',
+                  'Meus agendamentos',
                   style: TextStyle(
                     color: AppColor.white,
                     fontSize: 18,

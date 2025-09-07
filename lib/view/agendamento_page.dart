@@ -334,11 +334,10 @@ class _AgendamentoViewState extends State<AgendamentoView> {
                   onPressed: () {
                     if (_formKey.currentState!.validate() &&
                         _selectedHorario != null) {
-                      final selectedDateString = DateFormat(
-                        'dd/MM/yyyy',
-                      ).format(_selectedDay!);
+                      DateFormat('dd/MM/yyyy').format(_selectedDay!);
 
                       // TODO: Adicionar lógica para salvar o agendamento
+                      // TODO: Adicionar confirmação de agendamento
                       Navigator.of(context).pop();
                     } else if (_selectedHorario == null) {
                       ScaffoldMessenger.of(context).showSnackBar(

@@ -35,14 +35,15 @@ class MyApp extends StatelessWidget {
           900: Color(0xFF3301A6),
         }),
       ),
+      // Habilita internacionalização
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('pt', 'BR')],
-
       initialRoute: '/login',
+      //Define os routes
       routes: {
         '/home': (context) => const HomePage(),
         '/login': (context) => const LoginView(),
