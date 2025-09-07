@@ -8,8 +8,8 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(texto, style: const TextStyle(color: AppColor.white)),
-      backgroundColor: AppColor.violet,
+      title: Text(texto, style: const TextStyle(color: AppColor.darkViolet)),
+      backgroundColor: AppColor.white,
       centerTitle: true,
     );
   }

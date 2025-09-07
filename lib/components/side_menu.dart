@@ -18,11 +18,11 @@ class SideMenu extends StatelessWidget {
       child: ListView(
         children: [
           const DrawerHeader(
-            decoration: BoxDecoration(color: AppColor.violet),
+            decoration: BoxDecoration(color: AppColor.white),
             child: Text(
               'Menu',
               style: TextStyle(
-                color: AppColor.white,
+                color: AppColor.darkViolet,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),

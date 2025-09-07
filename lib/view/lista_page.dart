@@ -73,7 +73,7 @@ class _FuturosAgendamentosViewState extends State<FuturosAgendamentosView> {
       ),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
-        child: CustomAppBar(texto: 'Seus Agendamentos'),
+        child: CustomAppBar(texto: 'Meus Agendamentos'),
       ),
       body: _isLoading
           ? const Center(
@@ -104,6 +104,7 @@ class _FuturosAgendamentosViewState extends State<FuturosAgendamentosView> {
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: AppColor.lilac,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

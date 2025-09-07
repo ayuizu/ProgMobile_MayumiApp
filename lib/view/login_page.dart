@@ -57,12 +57,12 @@ class _LoginViewState extends State<LoginView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text(
-                  'Bem-vindo de volta!',
+                  'Entre para continuar',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: AppColor.graphite,
+                    color: AppColor.darkViolet,
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -118,7 +118,7 @@ class _LoginViewState extends State<LoginView> {
                       debugPrint('Ir para a tela de recuperação de senha');
                     },
                     child: const Text(
-                      'Esqueceu a senha?',
+                      'Esqueci a senha',
                       style: TextStyle(color: AppColor.violet),
                     ),
                   ),
@@ -130,7 +130,7 @@ class _LoginViewState extends State<LoginView> {
                     backgroundColor: AppColor.violet,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                   child: const Text(

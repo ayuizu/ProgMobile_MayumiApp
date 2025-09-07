@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w300,
-                  color: AppColor.graphite,
+                  color: AppColor.darkViolet,
                   fontStyle: FontStyle.italic,
                 ),
               ),
@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
                   backgroundColor: AppColor.violet,
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
                 child: const Text(
@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
                   backgroundColor: AppColor.graphite,
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
                 child: const Text(
@@ -96,7 +96,7 @@ class HomePage extends StatelessWidget {
                   backgroundColor: AppColor.graphite,
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
                 child: const Text(
