@@ -7,5 +7,6 @@ Aplicativo desenvolvido em Flutter para a disciplina Programação para Disposit
 ## Melhorias previstas para o futuro
 1. Implementar lógica e validação para login e logout; 
 2. Criar página e lógica para criar conta; 
-3. Exibir em Meus Agendamentos só os agendamentos do cliente ou do profissional logado. Para administrador, manter a exibição de todos os agendamentos; 
-4. Criar integração com banco de dados. 
+3. Adicionar mais informações sobre profissionais e serviços;
+4. Exibir em Meus Agendamentos só os agendamentos do cliente ou do profissional logado. Para administrador, manter a exibição de todos os agendamentos; 
+5. Criar integração com banco de dados. 
