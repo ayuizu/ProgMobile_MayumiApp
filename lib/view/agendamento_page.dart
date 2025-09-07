@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
@@ -7,7 +8,11 @@ import '../components/custom_appBar.dart';
 import '../components/input_decoration.dart';
 import '../components/side_menu.dart';
 import '../models/servico.dart';
+
+import '../controller/agenda_controller.dart';
 import '../controller/profissional_controller.dart';
+
+// TODO: limpar horários ocupados ao reabrir Novo Agendamento, criar confirmação de agendamento
 
 class AgendamentoView extends StatefulWidget {
   const AgendamentoView({Key? key}) : super(key: key);
@@ -30,6 +35,8 @@ class _AgendamentoViewState extends State<AgendamentoView> {
   List<String> _listaProfissionais = [];
   List<Servico> _listaServicos = [];
   final _profissionalController = ProfissionalController();
+  final _agendaController = AgendaController();
+  List<String> _horariosOcupados = [];
 
   bool _isLoading = true;
 
@@ -37,11 +44,22 @@ class _AgendamentoViewState extends State<AgendamentoView> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _loadProfissionais();
+    _loadAllData();
+    _loadAgenda();
   }
 
-  void _loadProfissionais() async {
-    await _profissionalController.readAll();
+  void _loadAgenda() async {
+    await _agendaController.readAll();
+  }
+
+  void _loadAllData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await Future.wait([
+      _profissionalController.readAll(),
+      _agendaController.readAll(),
+    ]);
     setState(() {
       _listaProfissionais = _profissionalController.profissionalList
           .map((p) => p.nome)
@@ -56,7 +74,30 @@ class _AgendamentoViewState extends State<AgendamentoView> {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
       });
+      if (_selectedProfissional != null) {
+        _loadHorariosDisponiveis();
+      }
     }
+  }
+
+  void _loadHorariosDisponiveis() {
+    final profissional = _profissionalController.profissionalList
+        .firstWhereOrNull((p) => p.nome == _selectedProfissional);
+    if (profissional == null) {
+      _horariosOcupados = [];
+      return;
+    }
+
+    final todosAgendamentos = _agendaController.agendaList;
+
+    final agendamentosOcupados = todosAgendamentos.where((agenda) {
+      return agenda.profissionalId == profissional.id &&
+          isSameDay(agenda.data, _selectedDay!);
+    }).toList();
+
+    _horariosOcupados = agendamentosOcupados.map((a) => a.horario).toList();
+
+    setState(() {});
   }
 
   @override
@@ -175,11 +216,15 @@ class _AgendamentoViewState extends State<AgendamentoView> {
                           setState(() {
                             _selectedProfissional = newValue;
                             _selectedServico = null;
+                            _listaServicos = [];
                             if (newValue != null) {
                               final profissional = _profissionalController
                                   .profissionalList
-                                  .firstWhere((p) => p.nome == newValue);
-                              _listaServicos = profissional.servicos;
+                                  .firstWhereOrNull((p) => p.nome == newValue);
+                              if (profissional != null) {
+                                _listaServicos = profissional.servicos;
+                                _loadHorariosDisponiveis();
+                              }
                             }
                           });
                         },
@@ -228,9 +273,12 @@ class _AgendamentoViewState extends State<AgendamentoView> {
                               final time =
                                   '${hour.toString().padLeft(2, '0')}:00';
                               final isLunchTime = hour == 12;
+                              final isOcupado = _horariosOcupados.contains(
+                                time,
+                              );
 
                               return ElevatedButton(
-                                onPressed: isLunchTime
+                                onPressed: isLunchTime || isOcupado
                                     ? null
                                     : () {
                                         setState(() {
@@ -240,15 +288,19 @@ class _AgendamentoViewState extends State<AgendamentoView> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: _selectedHorario == time
                                       ? AppColor.violet
-                                      : AppColor.lightGrey,
+                                      : isOcupado
+                                      ? AppColor.lightGrey
+                                      : AppColor.white,
                                   foregroundColor: _selectedHorario == time
                                       ? AppColor.white
-                                      : AppColor.graphite,
+                                      : isOcupado
+                                      ? AppColor.graphite
+                                      : AppColor.violet,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   side: BorderSide(
-                                    color: isLunchTime
+                                    color: isLunchTime || isOcupado
                                         ? AppColor.lightGrey
                                         : AppColor.graphite,
                                   ),
@@ -287,11 +339,6 @@ class _AgendamentoViewState extends State<AgendamentoView> {
                       ).format(_selectedDay!);
 
                       // TODO: Adicionar lógica para salvar o agendamento
-                      print('Agendamento:');
-                      print('Profissional: $_selectedProfissional');
-                      print('Serviço: $_selectedServico');
-                      print('Data: $selectedDateString');
-                      print('Horário: $_selectedHorario');
                       Navigator.of(context).pop();
                     } else if (_selectedHorario == null) {
                       ScaffoldMessenger.of(context).showSnackBar(

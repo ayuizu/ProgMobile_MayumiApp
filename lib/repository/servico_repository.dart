@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import '../models/servico.dart';
 
 class ServicoRepository {
@@ -10,5 +11,9 @@ class ServicoRepository {
       Servico(id: 105, nome: 'Acupuntura', preco: 180.0),
       Servico(id: 106, nome: 'Moxaterapia', preco: 100.0),
     ];
+  }
+
+  Servico? getServicoById(int id) {
+    return getServicos().firstWhereOrNull((servico) => servico.id == id);
   }
 }

@@ -8,6 +8,7 @@ class Profissional {
   final String senha;
   final String categoria;
   final List<Servico> servicos;
+
   Profissional({
     required this.id,
     required this.nome,

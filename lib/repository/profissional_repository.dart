@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import '../models/servico.dart';
 import '../models/profissional.dart';
 
@@ -42,5 +43,11 @@ class ProfissionalRepository {
         ],
       ),
     ];
+  }
+
+  Profissional? getProfissionalById(int id) {
+    return getProfissionais().firstWhereOrNull(
+      (profissional) => profissional.id == id,
+    );
   }
 }

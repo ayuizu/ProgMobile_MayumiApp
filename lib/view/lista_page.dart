@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mayumi_app/controller/profissional_controller.dart';
+import 'package:mayumi_app/controller/servico_controller.dart';
+import 'package:mayumi_app/controller/cliente_controller.dart';
 
 import '../components/colors.dart';
 import '../components/custom_appbar.dart';
 import '../components/side_menu.dart';
 import '../models/agenda.dart';
 import '../controller/agenda_controller.dart';
+
+// TODO: Filtrar agendamentos para mostrar somente os do cliente logado
 
 class FuturosAgendamentosView extends StatefulWidget {
   const FuturosAgendamentosView({super.key});
@@ -17,6 +22,10 @@ class FuturosAgendamentosView extends StatefulWidget {
 
 class _FuturosAgendamentosViewState extends State<FuturosAgendamentosView> {
   final _agendaController = AgendaController();
+  final _profissionalController = ProfissionalController();
+  final _servicoController = ServicoController();
+  final _clienteController = ClienteController();
+
   List<Agenda> _agendamentosFuturos = [];
   bool _isLoading = true;
 
@@ -27,14 +36,31 @@ class _FuturosAgendamentosViewState extends State<FuturosAgendamentosView> {
   }
 
   void _loadAgendamentos() async {
-    await _agendaController.readAll();
+    await Future.wait([
+      _agendaController.readAll(),
+      _profissionalController.readAll(),
+      _servicoController.readAll(),
+      _clienteController.readAll(),
+    ]);
 
     final now = DateTime.now();
     setState(() {
       _agendamentosFuturos = _agendaController.agendaList.where((agenda) {
-        // Compara apenas a data, ignorando o horário
+        // Compara data, ignorando o horário
         return agenda.data.isAfter(DateTime(now.year, now.month, now.day - 1));
       }).toList();
+
+      _agendamentosFuturos.sort((a, b) {
+        // Ordena por data
+        final dateComparison = a.data.compareTo(b.data);
+        if (dateComparison != 0) {
+          return dateComparison;
+        }
+        // TODO: Corrigir lógica de ordenamento por horário se data for igual. Não está funcionando corretamente
+        final aTime = DateFormat('HH:mm').parse(a.horario);
+        final bTime = DateFormat('HH:mm').parse(b.horario);
+        return aTime.compareTo(bTime);
+      });
       _isLoading = false;
     });
   }
@@ -84,7 +110,7 @@ class _FuturosAgendamentosViewState extends State<FuturosAgendamentosView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Serviço: ${agenda.servicoNome}',
+              'Serviço: ${_servicoController.getNomeById(agenda.servicoId)}',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -93,8 +119,12 @@ class _FuturosAgendamentosViewState extends State<FuturosAgendamentosView> {
             ),
             const SizedBox(height: 8),
             _buildDetailRow(
+              Icons.person_pin,
+              'Cliente: ${_clienteController.getNomeById(agenda.clienteId)}',
+            ),
+            _buildDetailRow(
               Icons.person,
-              'Profissional: ${agenda.profissionalNome}',
+              'Profissional: ${_profissionalController.getNomeById(agenda.profissionalId)}',
             ),
             _buildDetailRow(
               Icons.calendar_today,
